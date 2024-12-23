@@ -1,0 +1,24 @@
+.container {
+    height: 30px;
+    display: flex;
+    gap: 30px;
+    padding: 15px;
+    align-items: center;
+    border-bottom: 1px solid #585859;
+    /*font-family: 'Baseline_Pro', sans-serif;*/
+    font-family: sans-serif;
+}
+
+.button {
+    padding: 7px;
+    color: #e9e9ee;
+    background-color: transparent;
+    font-size: 14px;
+    transition: 0.2s;
+}
+
+.button:hover {
+    background-color: #343436;
+    transition: 0.2s;
+    color: #ffffff;
+}

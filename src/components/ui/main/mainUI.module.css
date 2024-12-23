@@ -1,0 +1,14 @@
+.main {
+    width: 100%;
+    display: flex;
+    gap: 15px;
+    padding: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+    align-items: center;
+    height: 100%;
+    overflow: hidden;
+    overflow-y: auto;
+    scrollbar-color: #4F5D75 #f7f7f8;
+    scrollbar-width: thin;
+}

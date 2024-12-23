@@ -1,0 +1,208 @@
+.card {
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    left: calc(50% - 350px);
+    top: calc(50% - 420px);
+    height: 850px;
+    width: 700px;
+    background-color: #F2F2F7;
+    z-index: 5;
+    border: 1px solid black;
+    border-radius: 10px;
+}
+
+.image_wrapper {
+    display: flex;
+    border-bottom: 1px solid #F2F2F7;
+    align-items: center;
+    height: 600px;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.text_wrapper {
+    margin: 10px;
+    background-color: #fafafc;
+    height: 100%;
+    color:#000000;
+}
+
+.card_image {
+    width: 100%;
+    height: auto;
+}
+
+.button_close {
+    top: -55px;
+    right: -35px;
+    position: absolute;
+    border: none;
+    background: none;
+    color: #F2F2F7;
+    font-size: 60px;
+    opacity: 1;
+    transition: opacity .3s;
+    cursor: pointer;
+}
+
+.button_close:hover {
+    opacity: 0.5;
+    transition: opacity .3s;
+}
+
+.card_text_input {
+    white-space: pre-wrap;
+    width: 100%;
+    height: 100%;
+    border: none;
+    font-size: 20px;
+    font-family: sans-serif;
+}
+
+.card_text {
+    white-space: pre-wrap;
+    width: 100%;
+    height: 100%;
+    border: none;
+    font-size: 20px;
+    font-family: sans-serif;
+}
+
+.card_menu {
+    position: absolute;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    right:-40px;
+    top: 50px;
+    width: 80px;
+    height: 200px;
+    border: 1px solid rgba(154, 153, 153, 0.7);
+    border-radius: 10px;
+    background-color: #2C2C2E;
+}
+
+.card_menu_button {
+    background: none;
+    color: #F2F2F7;
+    font-family: 'Baseline_Pro', sans-serif;
+    font-size: 16px;
+    height: 36px;
+    padding-left: 15px;
+    padding-right: 15px;
+    border-radius: 5px;
+    opacity: 1;
+    transition: opacity .3s;
+}
+
+.card_menu_button:hover {
+    opacity: 0.5;
+    transition: opacity .3s;
+}
+
+.card_menu_button_add_image {
+    position: absolute;
+    background-color: #1f2128;
+}
+
+.card_menu_button_save {
+    position: absolute;
+    top: 5px;
+    left: 10px;
+    height: 60px;
+    width: 60px;
+    background-image: url("../../../images/emblem-ok-svgrepo-com.svg");
+    background-size: 60px 60px;
+    background-repeat: no-repeat;
+    opacity: 1;
+    cursor: pointer;
+    transition: opacity .2s;
+}
+
+.card_menu_button_save:hover {
+    opacity: 0.7;
+    transition: opacity .2s;
+}
+
+.card_menu_button_delete {
+    position: absolute;
+    bottom: 5px;
+    left: 10px;
+    height: 60px;
+    width: 60px;
+    background-image: url("../../../images/garbage-interface-svgrepo-com.svg");
+    background-size: 60px 60px;
+    background-repeat: no-repeat;
+    opacity: 1;
+    cursor: pointer;
+    transition: opacity .2s;
+}
+
+.card_serial {
+    position: absolute;
+    top: 0;
+    left: 20px;
+    font-size: 130px;
+    color: black;
+    font-family: sans-serif;
+}
+
+.card_serial_text {
+    opacity: 0.4;
+}
+
+.card_add_image {
+    position: absolute;
+    top: calc(30% - 75px);
+    left: calc(50% - 75px);
+    height: 150px;
+    width: 150px;
+    background-image: url("../../../images/images-svgrepo-com.svg");
+    background-size: 150px 150px;
+    background-repeat: no-repeat;
+    opacity: 0.4;
+    cursor: pointer;
+    transition: opacity .2s;
+}
+
+.card_add_image:hover {
+    opacity: 0.7;
+    transition: opacity .2s;
+}
+
+.main_base_card_img_input {
+    display: none;
+}
+
+.card_serial_edit {
+
+    font-size: 130px;
+}
+
+.card_arrow_up {
+    font-size: 32px;
+    position: absolute;
+    top: 15px;
+    background: none;
+    opacity: 0.4;
+    right: -32px;
+}
+
+.card_arrow_up:hover {
+    opacity: 0.7;
+    transition: opacity 0.2s;
+}
+
+.card_arrow_down {
+    font-size: 35px;
+    position: absolute;
+    bottom: 25px;
+    background: none;
+    opacity: 0.4;
+}
+
+.card_arrow_down:hover {
+    opacity: 0.7;
+    transition: opacity 0.2s;
+}

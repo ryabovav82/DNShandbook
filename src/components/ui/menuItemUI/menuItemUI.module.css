@@ -1,0 +1,48 @@
+.button_item {
+    position: relative;
+    top: 5px;
+    background-color: #2b2d30;
+    /*background-color: transparent;*/
+    /*background-color: #515156;*/
+    padding: 5px;
+    display: flex;
+    justify-content: space-between;
+    bottom: 10px;
+    width: 250px;
+    min-height: 50px;
+    border: 1px solid rgba(105, 105, 105, 0.7);
+    align-items: center;
+    /*font-family: 'Baseline_Pro', sans-serif;*/
+    font-family: sans-serif;
+    color: #F2F2F7;
+    /*clip-path: polygon(0 0, 95% 0, 100% 30%, 100% 100%, 0 100%);*/
+    border-radius: 5px;
+    font-size: 16px;
+    transition: 0.2s;
+
+}
+
+.button_item:hover {
+    background-color: #343436;
+    border: 1px solid rgba(154, 153, 153, 0.7);
+    transition: 0.2s;
+}
+
+.menuItem_edit {
+    position: absolute;
+    top: 13px;
+    right: 10px;
+    height: 20px;
+    width: 20px;
+    background-image: url("../../../images/edit-svgrepo-com.svg");
+    background-size: 20px 20px;
+    background-repeat: no-repeat;
+    opacity: 0.3;
+    cursor: pointer;
+    transition: opacity .2s;
+}
+
+.menuItem_edit:hover {
+    opacity: 0.9;
+    transition: opacity .2s;
+}
