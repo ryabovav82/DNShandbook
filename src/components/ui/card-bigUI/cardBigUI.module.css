@@ -150,6 +150,8 @@
 
 .card_serial_text {
     opacity: 0.4;
+    -webkit-text-stroke: 1px #FFFFFF;
+    text-stroke: 1px #FFFFFF;
 }
 
 .card_add_image {
@@ -187,6 +189,8 @@
     background: none;
     opacity: 0.4;
     right: -32px;
+    -webkit-text-stroke: 1px #FFFFFF;
+    text-stroke: 1px #FFFFFF;
 }
 
 .card_arrow_up:hover {
@@ -200,6 +204,8 @@
     bottom: 25px;
     background: none;
     opacity: 0.4;
+    -webkit-text-stroke: 1px #FFFFFF;
+    text-stroke: 1px #FFFFFF;
 }
 
 .card_arrow_down:hover {

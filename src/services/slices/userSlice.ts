@@ -5,81 +5,115 @@ import {
 } from '@reduxjs/toolkit';
 
 import {
-  TLoginData,
-  TRegisterData,
-  getUserApi,
-  loginUserApi,
-  logoutApi,
-  registerUserApi
+    TLoginData,
+    TRegisterData,
+    getUserApi,
+    loginUserApi,
+    logoutApi,
+    registerUserApi, URLDB
 } from '../../utils/handbook-api';
 
 import { TUser } from '../../utils/types.ts';
-import { clearTokens, storeTokens } from '../../utils/auth';
 
 type TUserState = {
   isAuthChecked: boolean;
-  isAuthenticated: boolean;
+  isAuth: boolean;
+  isRegistered: boolean;
   loginError?: SerializedError;
   registerError?: SerializedError;
-  data: TUser;
+  data: TUserData;
 };
+
+type TUserData = {
+  id: string,
+  email: string,
+  userName: string,
+  role: string,
+  isActivated: boolean
+}
 
 export const initialState: TUserState = {
   isAuthChecked: false,
-  isAuthenticated: false,
+  isAuth: false,
+  isRegistered: false,
   data: {
-      id: 1,
-    name: '',
-    email: ''
+      id: '',
+      email: '',
+      userName: '',
+      role: '',
+      isActivated: false,
   }
 };
 
-export const getUser = createAsyncThunk(
-  'user/getUser',
-  async (_, { rejectWithValue }) => {
-    const res = await getUserApi();
-    if (!res?.success) {
-      return rejectWithValue(res);
+export const checkAuth = createAsyncThunk(
+    'user/checkAuth',
+    async () => {
+      const response = await fetch(`${URLDB}/users/refresh`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json;charset=utf-8'
+        },
+        credentials: 'include'
+      });
+      return await response.json();
     }
-    return res.user;
-  }
+);
+
+export const getUser = createAsyncThunk(
+    'user/getUser',
+    async () => {
+        const fetchUserData = async () => {
+            const response = await fetch(`${URLDB}/users`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json;charset=utf-8',
+                    'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
+                },
+            });
+            if (response.status === 401) {
+                const refreshResponse = await fetch(`${URLDB}/users/refresh`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json;charset=utf-8'
+                    },
+                    credentials: 'include'
+                });
+                const dataOk = await refreshResponse;
+                if(!dataOk.ok) {
+                    console.log('Авторизация закончилась')
+                }
+                const data = await dataOk.json();
+                localStorage.setItem('accessToken', data.accessToken);
+                return await fetchUserData();
+            }
+            return await response.json();
+        };
+
+        return await fetchUserData();
+    }
 );
 
 export const register = createAsyncThunk<TUser, TRegisterData>(
   'user/register',
-  async (data, { rejectWithValue }) => {
-    const res = await registerUserApi(data);
-    if (!res?.success) {
-      return rejectWithValue(res);
-    }
-    const { user, refreshToken, accessToken } = res;
-    storeTokens(refreshToken, accessToken);
-    console.log(user);
-    return user;
-  }
+  async (data) => await registerUserApi(data)
 );
 
 export const login = createAsyncThunk<TUser, TLoginData>(
   'user/login',
-  async (data, { rejectWithValue }) => {
-    const res = await loginUserApi(data);
-    if (!res?.success) {
-      return rejectWithValue(res);
-    }
-    const { user, refreshToken, accessToken } = res;
-    storeTokens(refreshToken, accessToken);
-    return user;
-  }
+  async (data) => await loginUserApi(data)
 );
 
 export const logoutUser = createAsyncThunk(
   'user/logoutUser',
-  async (_, { rejectWithValue }) => {
-    const res = await logoutApi();
-    if (!res?.success) {
-      return rejectWithValue(res);
-    }
-    clearTokens();
+  async () => {
+      const response = await fetch(`${URLDB}/users/logout`,{
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json;charset=utf-8'
+          },
+          credentials: 'include'
+      });
+      return await response.json();
   }
 );
 
@@ -89,52 +123,49 @@ const slice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(register.pending, (state) => {
-        state.registerError = undefined;
-      })
       .addCase(register.fulfilled, (state, action) => {
-        state.registerError = undefined;
-        state.isAuthenticated = true;
-        state.data = action.payload;
-      })
-      .addCase(register.rejected, (state, action) => {
-        state.registerError = action.meta.rejectedWithValue
-          ? (action.payload as SerializedError)
-          : action.error;
-      })
-      .addCase(login.pending, (state, action) => {
-        state.loginError = undefined;
+        state.isRegistered = true;
       })
       .addCase(login.fulfilled, (state, action) => {
-        state.loginError = undefined;
-        state.isAuthenticated = true;
-        state.data = action.payload;
-        console.log(state.isAuthChecked);
-        console.log(state.isAuthenticated);
-      })
-      .addCase(login.rejected, (state, action) => {
-        state.loginError = action.meta.rejectedWithValue
-          ? (action.payload as SerializedError)
-          : action.error;
+        state.data = action.payload.user;
+        if (action.payload.message === 'Email not found' ||  action.payload.message === 'Password Error') {
+          state.isAuth = false
+        } else state.isAuth = true;
+        if (state.isAuth === true) localStorage.setItem('accessToken', action.payload.accessToken);
       })
       .addCase(logoutUser.fulfilled, (state) => {
         console.log('LOGOUT');
         state.isAuthenticated = false;
+          localStorage.removeItem('accessToken');
         state.data = {
+          id: '',
           email: '',
-          name: ''
+          userName: '',
+          role: '',
+          isActivated: false,
         };
       })
-      .addCase(logoutUser.rejected, (state) => {
-        console.log('LOGOUT ERROR');
-      })
+        .addCase(logoutUser.rejected, (state) => {
+            console.log('LOGOUT ERROR');
+        })
+        .addCase(checkAuth.fulfilled, (state, action) => {
+            if(action.payload) {
+                if(action.payload.accessToken) {
+                    state.data = action.payload.user;
+                    state.isAuth = true;
+                }
+                if (state.isAuth === true) localStorage.setItem('accessToken', action.payload.accessToken);
+            }
+        })
       .addCase(getUser.fulfilled, (state, action) => {
-        state.isAuthenticated = true;
-        state.isAuthChecked = true;
-        state.data = action.payload;
+          console.log(action.payload)
+        // state.isAuthenticated = true;
+        // state.isAuthChecked = true;
+        // state.data = action.payload;
       })
       .addCase(getUser.rejected, (state) => {
         state.isAuthChecked = true;
+          console.log('get User ERROR')
       });
   }
 });

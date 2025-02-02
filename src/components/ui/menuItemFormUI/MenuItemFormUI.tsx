@@ -1,19 +1,30 @@
 import styles from './menuItemFormUI.module.css';
-export const MenuItemFormUI = ({inputText, selectedItem, handleSubmit, buttonCloseHandler, setInputTextHandler, setSelectedItemHandler}) => {
-
+export const MenuItemFormUI = (
+    {
+        id,
+        menuItemDelHandler,
+        inputText,
+        selectedItem,
+        handleSubmitTrue,
+        handleSubmitFalse,
+        buttonCloseHandler,
+        setInputTextHandler,
+        setSelectedItemHandler,
+        isNewMenuItem
+    }
+    ) => {
     return (
         <div className={styles.form_container}>
-            <form onSubmit={(event) => handleSubmit(event)}>
+            <form onSubmit={isNewMenuItem ? (event) => handleSubmitTrue(event) : (event) => handleSubmitFalse(event, id)}>
                 <button className={styles.button_close} onClick={() => buttonCloseHandler()}>
                     ×
                 </button>
                 <div className={styles.menuItem_menu}>
-                    <button type='submit'
-                            className={`${styles.menuItem_menu_button} ${styles.menuItem_menu_button_save}`}></button>
-                    <button className={`${styles.menuItem_menu_button} ${styles.menuItem_menu_button_delete}`}></button>
+                    <button type='submit' disabled={!inputText} className={`${styles.menuItem_menu_button} ${styles.menuItem_menu_button_save}`}></button>
+                    <button  type='button' onClick={() => menuItemDelHandler(id)} disabled={isNewMenuItem} className={`${styles.menuItem_menu_button} ${styles.menuItem_menu_button_delete}`}></button>
                 </div>
                 <div className={styles.form_name}>
-                    <label htmlFor="itemName">Наименование </label>
+                    <label className={styles.item_text} htmlFor="itemName">Наименование </label>
                     <input
                         className={styles.form_name_input}
                         name='itemName'
@@ -22,7 +33,7 @@ export const MenuItemFormUI = ({inputText, selectedItem, handleSubmit, buttonClo
                         value={inputText}/>
                 </div>
                 <div className={styles.form_category}>
-                    <label htmlFor="itemСategory">Категория </label>
+                    <label className={styles.item_text} htmlFor="itemСategory">Категория </label>
                     <select
                         id="itemСategory"
                         name="itemСategory"

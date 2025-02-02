@@ -1,7 +1,7 @@
 export type TUser = {
   id: number;
+  userName: string;
   email: string;
-  name: string;
 };
 
 export type TCard = {

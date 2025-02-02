@@ -48,22 +48,46 @@ type TFaqItemsState = {
   isLoading: boolean;
   error: null | SerializedError;
   searchStr: string;
+  isModalOpen: boolean;
+  isNewFaq: boolean;
+  newFaqData: {
+    id: number;
+    title: string;
+    text: string;
+  };
   data: TFaqItems[];
 };
 const initialState: TFaqItemsState = {
   isLoading: true,
   error: null,
   searchStr: '',
+  isModalOpen: false,
+  isNewFaq: true,
+  newFaqData: {
+    id: 0,
+    title: '',
+    text: ''
+  },
   data: []
 };
 
 export const faqItemsSlice = createSlice({
   name: 'faqItems',
   initialState,
-  reducers: {},
+  reducers: {
+    isFaqModalOpen: (state, action) => {
+      state.isModalOpen = action.payload;
+    },
+      isNewFaqItem: (state, action) => {
+        state.isNewFaq = action.payload;
+    },
+    newFaqDataCreate: (state, action) => {
+      state.isNewFaq = action.payload;
+    }
+  },
   extraReducers: (builder) => {
     builder
-      .addCase(getFaqItems.pending, (state, action) => {
+      .addCase(getFaqItems.pending, (state) => {
         state.isLoading = true;
         state.error = null;
       })
@@ -141,5 +165,5 @@ export const faqItemsSlice = createSlice({
   }
 });
 
-export const {} = faqItemsSlice.actions;
+export const {isFaqModalOpen, isNewFaqItem, newFaqDataCreate} = faqItemsSlice.actions;
 export default faqItemsSlice.reducer;

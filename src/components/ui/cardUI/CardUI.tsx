@@ -1,11 +1,11 @@
 import styles from './cardUI.module.css';
-export const CardUI = ({id: id, menuItemId: menuItemId, serialNumber: serialNumber, image: image, text: text, cardClickHandler: cardClickHandler}) => {
-    const card = {id: id, menuItemId: menuItemId, serialNumber: serialNumber, image: image, text: text};
+export const CardUI = ({id, menuItemId, cardIndex, image, text, cardClickHandler}) => {
+    const card = {id, menuItemId, cardIndex, image: image, text: text};
     return (
         <div className={styles.card} onClick={() => cardClickHandler(card)}>
             <div className={styles.image_wrapper}>
                 <div className={styles.card_index}>
-                    <span>{serialNumber}</span>
+                    <span>{cardIndex}</span>
                 </div>
                 <img
                     className={styles.card_image}
@@ -14,7 +14,7 @@ export const CardUI = ({id: id, menuItemId: menuItemId, serialNumber: serialNumb
                 />
             </div>
             <div className={styles.text_wrapper}>
-                {text}
+                <pre>{text}</pre>
             </div>
         </div>
     );

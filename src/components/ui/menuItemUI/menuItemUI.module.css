@@ -2,8 +2,6 @@
     position: relative;
     top: 5px;
     background-color: #2b2d30;
-    /*background-color: transparent;*/
-    /*background-color: #515156;*/
     padding: 5px;
     display: flex;
     justify-content: space-between;
@@ -12,10 +10,8 @@
     min-height: 50px;
     border: 1px solid rgba(105, 105, 105, 0.7);
     align-items: center;
-    /*font-family: 'Baseline_Pro', sans-serif;*/
     font-family: sans-serif;
     color: #F2F2F7;
-    /*clip-path: polygon(0 0, 95% 0, 100% 30%, 100% 100%, 0 100%);*/
     border-radius: 5px;
     font-size: 16px;
     transition: 0.2s;
@@ -45,4 +41,49 @@
 .menuItem_edit:hover {
     opacity: 0.9;
     transition: opacity .2s;
+}
+
+.ripple {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: #50ff53;
+    position: absolute;
+    bottom: 5px;
+}
+
+.ripple:before {
+    content: "";
+    width: 16px;
+    height: 16px;
+    position: absolute;
+    border-radius: 50%;
+    top: -4px;
+    left: -4px;
+    border: 2px solid #50ff53;
+    animation: anim-ripple 2s infinite;
+}
+
+@keyframes anim-ripple {
+    from {
+        opacity: 1;
+        transform: scale3d(0.75, 0.75, 1);
+    }
+    to {
+        opacity: 0;
+        transform: scale3d(1.25, 1.25, 1);
+    }
+}
+
+.ripple_off {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: #3b423b;
+    position: absolute;
+    bottom: 5px;
+}
+
+.text {
+    margin-left: 4px;
 }

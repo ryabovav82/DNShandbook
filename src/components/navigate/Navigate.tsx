@@ -1,18 +1,27 @@
 import {NavigateUI} from "../ui/navigateUI/NavigateUI.tsx";
-import {useState} from "react";
+import {AppDispatch, RootState, useSelector} from "../../services/store.ts";
+import {useDispatch} from "react-redux";
+import {setIsNewMenuItem, setMenuItemData, setModalOpen} from "../../services/slices/menuItemSlice.ts";
 
 export const Navigate = () => {
-    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const dispatch: AppDispatch = useDispatch();
+
+    const isModalOpen = useSelector((state: RootState) => state.menuItemsReducer.modalOpen);
     const newMenuItemHandler = () => {
-        setIsModalOpen(true);
+        dispatch(setMenuItemData({id: 0, name: '', category: 'other'}))
+        dispatch(setModalOpen(true));
+        dispatch(setIsNewMenuItem(true));
     }
 
     const overlayClick = () => {
-        setIsModalOpen(false);
+        dispatch(setModalOpen(false));
+        dispatch(setMenuItemData({id: 0, name: '', category: ''}))
     }
 
     const buttonCloseHandler = () => {
-        setIsModalOpen(false);
+        dispatch(setMenuItemData({id: 0, name: '', category: ''}))
+        dispatch(setModalOpen(false));
     }
     return <NavigateUI
         newMenuItemHandler={newMenuItemHandler}

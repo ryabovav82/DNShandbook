@@ -83,8 +83,6 @@ export const delMenuItemApi = (id: string) =>
 
 //Добавление menuItem
 export const addMenuItemApi = (data: TMenuItems) => {
-    console.log('11111111111111111111')
-    return (
         fetch(`${URLDB}/menuitem`, {
             method: 'POST',
             headers: {
@@ -94,18 +92,17 @@ export const addMenuItemApi = (data: TMenuItems) => {
         })
             .then((res) => res.json())
             .then((data) => data)
-    )
 }
 
 
 //Изменяем MenuItem
-export const changeMenuItemApi = (data: { id: string; name: string }) =>
+export const changeMenuItemApi = (data: { id: string; name: string; category: string }) =>
   fetch(`${URLDB}/menuitem/${data.id}`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json;charset=utf-8'
     },
-    body: JSON.stringify({ name: data.name })
+    body: JSON.stringify({ name: data.name, category: data.category })
   })
     .then((res) => res.json())
     .then((data) => data);
@@ -187,8 +184,9 @@ export const addCardApi = (data: TCard) =>
       'Content-Type': 'application/json'
     },
     body: JSON.stringify({
+        id: data.id,
       menuItemId: data.menuItemId,
-      serialNumber: data.cardIndex,
+        cardIndex: data.cardIndex,
       image: data.image,
       text: data.text
     })
@@ -197,17 +195,13 @@ export const addCardApi = (data: TCard) =>
     .then((data) => data);
 
 //Изменяем Card
-export const changeCardTextApi = (data: {
-  id: number;
-  menuItemId: number;
-  text: string;
-}) =>
+export const changeCardTextApi = (data: {id: number; menuItemId: number; text: string; cardIndex: number;}) =>
   fetch(`${URLDB}/menuitem/card/${data.id}`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify({ menuItemId: data.menuItemId, text: data.text })
+    body: JSON.stringify({ menuItemId: data.menuItemId, text: data.text, cardIndex: data.cardIndex })
   })
     .then((res) => res.json())
     .then((data) => data);
@@ -220,7 +214,6 @@ export const changeCardImageApi = (data: {
   const formData = new FormData();
   formData.append('cardId', data.imageName);
   formData.append('image', data.imageFile);
-  console.log(data.imageName);
   return fetch(`${URLDB}/menuitem/card/upload`, {
     method: 'POST',
     body: formData
@@ -235,8 +228,8 @@ export type TLoginData = {
 };
 
 export type TRegisterData = {
+  userName: string;
   email: string;
-  name: string;
   password: string;
 };
 
@@ -245,42 +238,62 @@ type TAuthResponse = TServerResponse<{
   accessToken: string;
   user: TUser;
 }>;
-
-export const registerUserApi = (data: TRegisterData) =>
-  fetch(`${URL}/auth/register`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json;charset=utf-8'
-    },
-    body: JSON.stringify(data)
-  })
-    .then((res) => checkResponse<TAuthResponse>(res))
-    .then((data) => {
-      if (data?.success) return data;
-      return Promise.reject(data);
-    });
+//----------------------------------USER---------------------------------------------------------
+//Регистрация
+export const registerUserApi = (data: TRegisterData) =>{
+    return (
+        fetch(`${URLDB}/users/register`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            body: JSON.stringify(data)
+        })
+            .then((res) => res.json())
+            .then((data) => data)
+    )
+}
 
 //Логинимся
 export const loginUserApi = (data: TLoginData) =>
-  fetch(`${URL}/auth/login`, {
+  fetch(`${URLDB}/users/login`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json;charset=utf-8'
     },
-    body: JSON.stringify(data)
+    body: JSON.stringify(data),
+      credentials: 'include'
   })
-    .then((res) => checkResponse<any>(res))
-    .then((data) => {
-      if (data?.success) return data;
-      return Promise.reject(data);
-    });
+    .then((res) => res.json())
+    .then((data) => data);
 
 export const getUserApi = () =>
-  fetchWithRefresh<any>(`${URL}/auth/user`, {
-    headers: {
-      authorization: getCookie('accessToken')
-    } as HeadersInit
-  });
+    fetch(`${URLDB}/users`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json;charset=utf-8',
+            'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
+        }
+    })
+        .then((res) => {
+            console.log(res.status)
+            if(res.status === 401) {
+                refreshUserApi()
+                    .then()
+            }
+            return res.json()
+        })
+        .then((data) => console.log(data));
+
+export const refreshUserApi = () =>
+    fetch(`${URLDB}/users/refresh`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            credentials: 'include'
+        })
+        .then()
 
 export const logoutApi = () =>
   fetch(`${URL}/auth/logout`, {

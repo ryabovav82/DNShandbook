@@ -39,18 +39,19 @@ export const delCard = createAsyncThunk<
 
 export const changeCardText = createAsyncThunk<
   TCard,
-  { menuItemId: number; id: number; text: string }
+  { menuItemId: number; id: number; text: string; cardIndex: number }
 >(
   'cards/changeCard',
   async (data: {
     menuItemId: number;
     id: number;
     text: string;
+    cardIndex: number;
   }): Promise<TCard> => await changeCardTextApi(data)
 );
 
 export const changeCardImage = createAsyncThunk<
-  any,
+  never,
   { imageName: string; imageFile: File }
 >(
   'cards/changeCardImage',
@@ -60,17 +61,21 @@ export const changeCardImage = createAsyncThunk<
   }: {
     imageName: string;
     imageFile: File;
-  }): Promise<any> => await changeCardImageApi({ imageName, imageFile })
+  }): Promise<never> => await changeCardImageApi({ imageName, imageFile })
 );
 
 type TCardsState = {
   isLoading: boolean;
   error: null | SerializedError;
+  isNewCard: boolean;
+  isModalCardOpen:boolean;
   data: TCard[];
 };
 const initialState: TCardsState = {
   isLoading: true,
   error: null,
+  isNewCard: true,
+  isModalCardOpen: false,
   data: []
 };
 
@@ -78,12 +83,11 @@ export const cardsSlice = createSlice({
   name: 'cards',
   initialState,
   reducers: {
-    // Удаление карточки по ID
-    removeCard: (
-      state,
-      action: PayloadAction<{ menuItemId: number; id: number }>
-    ) => {
-      state.data = state.data.filter((card) => card.id !== action.payload.id);
+    isNewCreateCard: (state, action) => {
+      state.isNewCard = action.payload;
+    },
+    setIsModalCardOpen: (state, action) => {
+      state.isModalCardOpen = action.payload;
     }
   },
   extraReducers: (builder) => {
@@ -114,7 +118,7 @@ export const cardsSlice = createSlice({
         state.isLoading = false;
         state.error = action.error;
       })
-      .addCase(changeCardText.pending, (state, action) => {
+      .addCase(changeCardText.pending, (state,) => {
         state.isLoading = true;
         state.error = null;
       })
@@ -126,7 +130,8 @@ export const cardsSlice = createSlice({
         );
         if (findCard) {
           findCard.text = action.payload.text;
-          findCard.image = `http://localhost:3001/menuitem/card/images/${action.payload.id}.jpg`;
+          findCard.image = `http://localhost:3005/menuitem/card/images/${action.payload.id}.jpg`;
+          findCard.cardIndex = action.payload.cardIndex;
         }
       })
       .addCase(changeCardText.rejected, (state, action) => {
@@ -149,5 +154,8 @@ export const cardsSlice = createSlice({
   }
 });
 
-export const { removeCard } = cardsSlice.actions;
+export const {
+  isNewCreateCard,
+  setIsModalCardOpen
+} = cardsSlice.actions;
 export default cardsSlice.reducer;

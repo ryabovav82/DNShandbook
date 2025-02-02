@@ -1,0 +1,159 @@
+.container {
+    padding: 1px;
+    background-color: #F2F2F7;
+    font-family: sans-serif;
+    position: fixed;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    left: calc(50% - 600px);
+    top: calc(50% - 250px);
+    width: 1200px;
+    height: 500px;
+    z-index: 5;
+    font-size: 20px;
+    border-radius: 10px;
+}
+
+.faq_form_question {
+    display: flex;
+    width: 1198px;
+    justify-content: space-between;
+    padding: 5px;
+    border-top-right-radius: 10px;
+    border-top-left-radius: 10px;
+    background-color: #a4a4a8;
+    border: 1px solid rgb(135, 135, 136);
+    height: 60px;
+}
+
+.faq_form_answer {
+    padding: 5px;
+    width: 1200px;
+    background-color: #F2F2F7;
+    flex-grow: 1;
+    border-bottom-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+    border: 1px solid rgba(242, 242, 247, 0.3);
+    overflow: hidden;
+    transition: 0.2s;
+}
+
+.faq_form_date {
+    font-size: 14px;
+    color: black;
+}
+
+.input_question {
+    padding: 5px;
+    font-size: 18px;
+    background-color: transparent;
+    width: 1100px;
+}
+
+.input_answer {
+    padding: 5px;
+    font-size: 18px;
+    background-color: transparent;
+    width: 1100px;
+    height: 430px;
+}
+
+.button_faq_close {
+    top: -55px;
+    right: -35px;
+    position: absolute;
+    border: none;
+    background: none;
+    color: #F2F2F7;
+    font-size: 60px;
+    opacity: 1;
+    transition: opacity .3s;
+    cursor: pointer;
+}
+
+.button_faq_close:hover {
+    opacity: 0.5;
+    transition: opacity .3s;
+}
+
+.faq_menu {
+    position: absolute;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    right:-40px;
+    top: 45px;
+    width: 60px;
+    height: 150px;
+    border: 1px solid rgba(154, 153, 153, 0.7);
+    border-radius: 10px;
+    background-color: #2C2C2E;
+}
+
+.faq_menu_button {
+    background: none;
+    color: #F2F2F7;
+    font-family: 'Baseline_Pro', sans-serif;
+    font-size: 16px;
+    height: 36px;
+    padding-left: 15px;
+    padding-right: 15px;
+    border-radius: 5px;
+    opacity: 1;
+    transition: opacity .3s;
+}
+
+.faq_menu_button:hover {
+    opacity: 0.5;
+    transition: opacity .3s;
+}
+
+.faq_menu_button_save {
+    position: absolute;
+    top: 5px;
+    left: 10px;
+    height: 40px;
+    width: 40px;
+    background-image: url("../../../images/emblem-ok-svgrepo-com.svg");
+    background-size: 40px 40px;
+    background-repeat: no-repeat;
+    opacity: 1;
+    cursor: pointer;
+    transition: opacity .2s;
+}
+
+/*.faq_menu_button_save:disabled {*/
+/*    opacity: 0.1;*/
+/*}*/
+
+/*.faq_menu_button_delete:disabled {*/
+/*    opacity: 0.1;*/
+/*}*/
+
+/*.faq_menu_button_delete:hover:disabled {*/
+/*    opacity: 0.1;*/
+/*}*/
+
+.faq_menu_button_save:hover {
+    opacity: 0.7;
+    transition: opacity .2s;
+}
+
+/*.faq_menu_button_save:hover:disabled {*/
+/*    opacity: 0.1;*/
+/*}*/
+
+.faq_menu_button_delete {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    height: 40px;
+    width: 40px;
+    background-image: url("../../../images/garbage-interface-svgrepo-com.svg");
+    background-size: 40px 40px;
+    background-repeat: no-repeat;
+    opacity: 1;
+    cursor: pointer;
+    transition: opacity .2s;
+}

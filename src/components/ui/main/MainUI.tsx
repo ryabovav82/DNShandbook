@@ -1,13 +1,17 @@
 import styles from './mainUI.module.css';
-import {Card} from "../../card/Card.tsx";
 import {NewCard} from "../../newCard/NewCard.tsx";
-export const MainUI = ({cards: cards}) => {
+export const MainUI = ({cards, createNewCard, selectedMenuItem}) => {
     const isAuthenticated = true;
     return (
         <main className={styles.main}>
             {cards}
-            {isAuthenticated && (
-                <NewCard />
+            {!selectedMenuItem && (
+                <div>
+                    <h1>Hello my friend</h1>
+                </div>
+            )}
+            {isAuthenticated && selectedMenuItem && (
+                <NewCard createNewCard={createNewCard} selectedMenuItem={selectedMenuItem}/>
             )}
         </main>
     );

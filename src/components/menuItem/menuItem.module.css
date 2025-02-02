@@ -1,0 +1,17 @@
+.category_text {
+    font-family: 'Baseline_Pro', sans-serif;
+    opacity: 0.7;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.category_wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
